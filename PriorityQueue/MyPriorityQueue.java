@@ -88,12 +88,12 @@ public class MyPriorityQueue
 		list.set(i, list.get(j));
 		list.set(j, save);
 	}
-
+	
 	public boolean remove(int val)
 	{
 		int i = 0;
 		boolean found = false;
-		for (; i < this.size; i++)	
+		for (; i < this.size; i++)
 			if (list.get(i) == val)
 			{
 				found = true;
@@ -103,10 +103,21 @@ public class MyPriorityQueue
 		if (found == true)
 		{
 			list.set(i, list.get(this.size - 1));
-			this.size--;
 			heapify(i);
+			if (isMaxHeap)
+				while (list.get(i) > list.get(parent(i)))
+				{
+					exchange(i, parent(i));
+					i = parent(i);
+				}
+			else
+				while (list.get(i) < list.get(parent(i)))
+				{
+					exchange(i, parent(i));
+					i = parent(i);
+				}	
+			size--;
 		}
-
 		return found;
 	}
 }
