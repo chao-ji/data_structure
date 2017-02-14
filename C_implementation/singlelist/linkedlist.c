@@ -11,7 +11,7 @@ single_node new_node (int val) {
         returns:
             node (ptr): pointer to the newly allocated node
     */
-    single_node node = malloc(sizeof(single_node));
+    single_node node = malloc(sizeof(*node));
     node->val = val;
     node->next = NULL;
     return node;
@@ -24,7 +24,7 @@ single_list new_list (void) {
         returns:
             list (ptr): pointer to the newly allocated list
     */
-    single_list list = malloc(sizeof(single_list));
+    single_list list = malloc(sizeof(*list));
     list->head = NULL;
     return list;
 }
