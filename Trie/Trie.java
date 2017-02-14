@@ -2,51 +2,42 @@ import java.util.*;
 
 public class Trie
 {
-
-	public Trie()
-	{
-		root = new TrieNode("");
-	}
+    public Trie()
+    {
+        root = new TrieNode();
+    }
 	
-	public void insert(String key)
-	{
-		TrieNode node = this.root;
+    public void insert(String key)
+    {
+        TrieNode node = this.root;
 
-		for (int i = 0; i < key.length(); i++)
-		{
-			if (node.children[key.charAt(i)] == null)
-				node.children[key.charAt(i)] = new TrieNode(key.substring(i, i + 1));
-			node = node.children[key.charAt(i)];
-		}
+        for (int i = 0; i < key.length(); i++)
+        {
+            if (node.children[key.charAt(i)] == null)
+                node.children[key.charAt(i)] = new TrieNode();
+            node = node.children[key.charAt(i)];
+        }
 
-		node.count++;
-	}
+        node.count++;
+    }
 
-	public boolean containsKey(String key)
-	{
-		TrieNode node = this.root;
+    public boolean containsKey(String key)
+    {
+        return this.count(key) > 0 ? true : false;
+    }
 
-		for (int i = 0; i < key.length(); i++)
-			if (node.children[key.charAt(i)] == null)
-				return false;
-			else
-				node = node.children[key.charAt(i)];
+    public int count(String key)
+    {
+        TrieNode node = this.root;
 
-		return node.count != 0;
-	}
+        for (int i = 0; i < key.length(); i++)
+            if (node.children[key.charAt(i)] == null)
+                return 0;
+            else
+                node = node.children[key.charAt(i)];
 
-	public int count(String key)
-	{
-		TrieNode node = this.root;
-
-		for (int i = 0; i < key.length(); i++)
-			if (node.children[key.charAt(i)] == null)
-				return 0;
-                        else
-                                node = node.children[key.charAt(i)];
-
-                return node.count;
-	}
+        return node.count;
+    }
 
 	public ArrayList<String> hasPrefix(String key)
 	{
@@ -76,26 +67,30 @@ public class Trie
 				if (node.children[i] != null)
 				{
 					queueNode.addLast(node.children[i]);
-					queueSuff.addLast(new String(s + node.children[i].key));
+                    StringBuilder sb = new StringBuilder(s);
+					queueSuff.addLast(sb.append((char) i).toString());
 				}
 		}
 
 		return list;		
 	}
 
-	TrieNode root;
+    public ArrayList<String> getKeys()
+    {
+        return this.hasPrefix("");
+    }
 
-	static class TrieNode
-	{
-		public TrieNode(String key)
-		{
-			this.key = key;
-			this.children = new TrieNode[256];
-			this.count = 0;
-		}
+    TrieNode root;
 
-		String key;
-		TrieNode[] children;
-		int count;
-	}
+    static class TrieNode
+    {
+        public TrieNode()
+        {
+            this.children = new TrieNode[128];
+            this.count = 0;
+        }
+
+        TrieNode[] children;
+        int count;
+    }
 }
