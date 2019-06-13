@@ -1,2 +1,2 @@
-# data_structure
-data structures implemented in java
+# Data Structures
+Common data structures implemented in various languages
