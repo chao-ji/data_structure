@@ -3,7 +3,7 @@ import numpy as np
 
 
 class Heap(object):
-  """
+  """Binary heap implementation of priority queue.
   """
 
   def __init__(self, is_max=False):
@@ -26,6 +26,7 @@ class Heap(object):
 
   @property
   def is_max(self):
+    """Whether heap is max-heap."""
     return self._is_max
 
   @property
@@ -37,12 +38,14 @@ class Heap(object):
     return None if self.size == 0 else self.array[0]
 
   def heapify(self, index):
-    """
+    """Maintain the heap property of the tree rooted at index `index`.
+    Time comlexity: O(log N)
+
     Assumes that the subtree rooted at `left(index)` and `right(index)` are both
     valid heaps (max or min).
 
     Args:
-      index: int scalar
+      index: int scalar, index of the node.
     """
     left = self._left(index)
     right = self._right(index)
@@ -51,9 +54,10 @@ class Heap(object):
       # `largest` points to the index of `index`, `left(index)`, `right(index)`
       # with largest value 
       largest = (left if left < self.size and 
-          self.array[left] > self.array[index] else index)
+          self.array[left][0] > self.array[index][0] else index)
+
       largest = (right if right < self.size and 
-          self.array[right] > self.array[largest] else largest)
+          self.array[right][0] > self.array[largest][0] else largest)
       if largest != index:
         self._swap(index, largest)
         self.heapify(largest)
@@ -62,14 +66,21 @@ class Heap(object):
       # `smallest` points to the index of `index`, `left(index)`, `right(index)`
       # with smallest value
       smallest = (left if left < self.size and 
-          self.array[left] < self.array[index] else index)
+          self.array[left][0] < self.array[index][0] else index)
+
       smallest = (right if right < self.size and
-          self.array[right] < self.array[smallest] else smallest)
+          self.array[right][0] < self.array[smallest][0] else smallest)
       if smallest != index:
         self._swap(index, smallest)
         self.heapify(smallest)
 
   def extract(self):
+    """Delete the root from heap and return the node. Time complexity: O(log N)
+
+    Returns:
+      key: key of the deleted node.
+      val: value of the deleted node.
+    """
     if self.is_empty:
       return None
 
@@ -83,12 +94,12 @@ class Heap(object):
     return key, val
 
   def insert(self, key, val=None):
-    """Insert a node.
+    """Insert a node. Time complexity: O(log N)
 
     The node with key `key` is first inserted to the end of the heap, which 
     might violate the heap property. The inserted node is then floated up
     along the path to the root, until it reaches the right place to be inserted.
-    In the mean time, `heapify` is called to maintain the heap property.
+    In the mean time, the heap property is maintained.
     
     Args:
       key: int scalar, key of node.
@@ -105,14 +116,14 @@ class Heap(object):
       # the path from root to `index` (not including `index`) is decreasing,
       # move `array[index]` to the right place by floating it up in the path
       # like insertion sort.
-      while index > 0 and self.array[self._parent(index)] < self.array[index]:
+      while index > 0 and self.array[self._parent(index)][0] < self.array[index][0]:
         self._swap(index, self._parent(index))
         index = self._parent(index)
     else:
       # the path from root to `index` (not including `index`) is increasing,
       # move `array[index]` to the right place by floating it up in the path
       # like insertion sort.
-      while index > 0 and self.array[self._parent(index)] > self.array[index]:
+      while index > 0 and self.array[self._parent(index)][0] > self.array[index][0]:
         self._swap(index, self._parent(index))
         index = self._parent(index)
 

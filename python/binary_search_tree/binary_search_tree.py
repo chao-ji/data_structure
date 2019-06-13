@@ -10,8 +10,13 @@ class BinarySearchTree(object):
   def __init__(self):
     self.root = None
 
-
   def insert(self, key, val=None):
+    """Insert a node with key `key`and optionally with value `value`.
+
+    Args:
+      key: int scalar, key of the node.
+      val: (Optional) int scalar, value of the node.
+    """
     # `parent` points to the parent of `node`, so we can assign `node`
     # as one of `parent`'s child (i.e. left or right) where `node` is
     # supposed to be inserted. 
